@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "lib": ["ES2015", "DOM"],
+    "types": ["node", "react", "jest", "testing-library__jest-dom"],
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "declaration": false,
+    "sourceMap": true,
+    "removeComments": true,
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "jsx": "react"
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["__tests__", "**/*.test.ts"]
+}

@@ -1,0 +1,55 @@
+{
+  "name": "react-kho",
+  "description": "Provider and hooks for a Kho store which fetches, normalizes, and caches data for your React app.",
+  "author": "Nguyen Nam Phong <phongnn@gmail.com>",
+  "version": "0.0.1",
+  "license": "MIT",
+  "keywords": [ "kho", "react-kho", "state", "hook", "fetch", "normalize", "cache", "suspense" ],
+  "homepage": "https://github.com/phongnn/react-kho",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phongnn/react-kho.git"
+  },
+  "bugs": {
+    "url": "https://github.com/phongnn/react-kho/issues"
+  },
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "types": "types/index.d.ts",
+  "files": [ "lib", "esm", "types" ],
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "clean": "rimraf lib esm types",
+    "build:esm": "tsc --module ES6 --outDir esm --declaration true --declarationDir types",
+    "build:cjs": "ncc build src/index.ts -o lib -m",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  },
+  "dependencies": {
+    "kho": "file:../kho/kho-0.0.1.tgz"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^10.4.9",
+    "@testing-library/user-event": "^12.1.3",
+    "@types/jest": "^26.0.10",
+    "@types/node": "^14.6.0",
+    "@types/react": "^16.8.24",
+    "@types/react-dom": "^16.9.8",
+    "@vercel/ncc": "^0.24.1",
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.2.0",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2"
+  }
+}
