@@ -1,10 +1,19 @@
 {
   "name": "react-kho",
-  "description": "Provider and hooks for a Kho store which fetches, normalizes, and caches data for your React app.",
+  "description": "React hooks for Kho which fetches, normalizes and caches data for your app.",
   "author": "Nguyen Nam Phong <phongnn@gmail.com>",
   "version": "0.0.1",
   "license": "MIT",
-  "keywords": [ "kho", "react-kho", "state", "hook", "fetch", "normalize", "cache", "suspense" ],
+  "keywords": [
+    "kho",
+    "react-kho",
+    "state",
+    "hook",
+    "fetch",
+    "normalize",
+    "cache",
+    "suspense"
+  ],
   "homepage": "https://github.com/phongnn/react-kho",
   "repository": {
     "type": "git",
@@ -16,20 +25,27 @@
   "main": "lib/index.js",
   "module": "esm/index.js",
   "types": "types/index.d.ts",
-  "files": [ "lib", "esm", "types" ],
+  "files": [
+    "lib",
+    "esm",
+    "types",
+    "dist",
+    "src"
+  ],
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "clean": "rimraf lib esm types",
+    "clean": "rimraf lib esm types dist",
+    "build:cjs": "tsc",
     "build:esm": "tsc --module ES6 --outDir esm --declaration true --declarationDir types",
-    "build:cjs": "ncc build src/index.ts -o lib -m",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs"
+    "build:dist": "ncc build src/index.ts -o dist -m",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:dist"
   },
   "peerDependencies": {
     "react": "^16.13.1"
   },
   "dependencies": {
-    "kho": "file:../kho/kho-0.0.1.tgz"
+    "kho": "^0.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
@@ -51,5 +67,6 @@
     "ts-jest": "^26.2.0",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
-  }
+  },
+  "sideEffects": false
 }

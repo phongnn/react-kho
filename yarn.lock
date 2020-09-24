@@ -2704,9 +2704,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"kho@file:../kho/kho-0.0.1.tgz":
+kho@^0.0.1:
   version "0.0.1"
-  resolved "file:../kho/kho-0.0.1.tgz#cb227d142bbe01ffeadc991cb5b09ebed9850892"
+  resolved "https://registry.yarnpkg.com/kho/-/kho-0.0.1.tgz#5a200abf2b538de629661585cae9c93d11385deb"
+  integrity sha512-7/OzuRYt0ALl+xjxWoFItSYX8EZ0gUzAPYcXmotuQekXTJuCUxfthfeTxwwJc1Q34yPQChtKzKX/QH4O7weYFA==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
