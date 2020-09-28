@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event"
 import { useMutation } from "../useMutation"
 import { Provider } from "../Provider"
 
-let mutateFn: (args: any, ctx: any) => Promise<void>
+let mutateFn: (args: any, ctx: any) => Promise<string>
 const mutation = new Mutation(
   "UpdateData",
   (args: any, ctx: any) => mutateFn(args, ctx),
@@ -20,7 +20,7 @@ const mutation = new Mutation(
 )
 
 function MyComponent() {
-  const [mutate, { loading, error, called }] = useMutation(mutation, {
+  const [mutate, { loading, error, called, data }] = useMutation(mutation, {
     arguments: { test: true },
     context: { blah: "BLAH" },
   })
@@ -36,6 +36,7 @@ function MyComponent() {
       </button>
       {loading && <p>Processing...</p>}
       {error && <p>{error.message || "Unknown error"}</p>}
+      {data && <p>Result: {data}</p>}
       {called && <p>Data has been updated successfully.</p>}
     </div>
   )
@@ -51,11 +52,12 @@ function renderWithMutateFn(fn: typeof mutateFn) {
 }
 
 it("should invoke mutate function and show success message", async () => {
-  const fn = jest.fn().mockResolvedValue(null)
+  const fn = jest.fn().mockResolvedValue("ok")
   renderWithMutateFn(fn)
 
   userEvent.click(screen.getByText("Mutate"))
   await waitForElementToBeRemoved(screen.getByText("Processing..."))
+  expect(screen.getByText("Result: ok")).toBeInTheDocument()
   // prettier-ignore
   expect(screen.getByText("Data has been updated successfully.")).toBeInTheDocument()
 
