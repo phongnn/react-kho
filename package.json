@@ -2,7 +2,7 @@
   "name": "react-kho",
   "description": "React hooks for Kho which fetches, normalizes and caches data for your app.",
   "author": "Nguyen Nam Phong <phongnn@gmail.com>",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "license": "MIT",
   "keywords": [
     "kho",
@@ -26,11 +26,12 @@
   "module": "esm/index.js",
   "types": "types/index.d.ts",
   "files": [
-    "lib",
-    "esm",
-    "types",
-    "dist",
-    "src"
+    "/lib",
+    "/esm",
+    "/types",
+    "/dist",
+    "/src",
+    "!/src/__tests__/"
   ],
   "scripts": {
     "test": "jest",
@@ -45,7 +46,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "kho": "^0.0.1"
+    "kho": "^0.2.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
