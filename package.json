@@ -2,7 +2,7 @@
   "name": "react-kho",
   "description": "React hooks for Kho which fetches, normalizes and caches data for your app.",
   "author": "Nguyen Nam Phong <phongnn@gmail.com>",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "license": "MIT",
   "keywords": [
     "kho",
@@ -47,7 +47,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "kho": "^0.2.1"
+    "kho": "^0.3.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
