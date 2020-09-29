@@ -2,7 +2,7 @@
   "name": "react-kho",
   "description": "React hooks for Kho which fetches, normalizes and caches data for your app.",
   "author": "Nguyen Nam Phong <phongnn@gmail.com>",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "keywords": [
     "kho",

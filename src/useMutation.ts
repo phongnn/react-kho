@@ -2,6 +2,7 @@ import { useReducer, Reducer } from "react"
 import { MutationOptions, Mutation } from "kho"
 
 import { useAdvancedStore } from "./Provider"
+import { useCustomCallback } from "./common/customHooks"
 
 interface MutationState<TResult> {
   loading: boolean
@@ -60,21 +61,23 @@ export function useMutation<TResult, TArguments, TContext>(
 ) {
   const store = useAdvancedStore()
   const { state, dispatch } = useCustomState<TResult>()
-  const originalOptions = options
 
-  const mutate = (
-    options: Pick<
-      MutationOptions<TResult, TArguments, TContext>,
-      "arguments" | "context"
-    > = {}
-  ) => {
-    const actualMutation = mutation.withOptions(originalOptions, options)
-    store.processMutation(actualMutation, {
-      onRequest: () => dispatch({ type: "ACTION_REQUEST" }),
-      onError: (err) => dispatch({ type: "ACTION_FAILURE", payload: err }),
-      onComplete: (data) => dispatch({ type: "ACTION_SUCCESS", payload: data }),
-    })
-  }
+  const originalOptions = options
+  const mutate = useCustomCallback(
+    (
+      // prettier-ignore
+      options: Pick<MutationOptions<TResult, TArguments, TContext>, "arguments" | "context"> = {}
+    ) => {
+      const actualMutation = mutation.withOptions(originalOptions, options)
+      store.processMutation(actualMutation, {
+        onRequest: () => dispatch({ type: "ACTION_REQUEST" }),
+        onError: (err) => dispatch({ type: "ACTION_FAILURE", payload: err }),
+        onComplete: (data) =>
+          dispatch({ type: "ACTION_SUCCESS", payload: data }),
+      })
+    },
+    [store, dispatch, mutation, originalOptions]
+  )
 
   return [mutate, state] as [typeof mutate, MutationState<TResult>]
 }
