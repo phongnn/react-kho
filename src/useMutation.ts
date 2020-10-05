@@ -1,4 +1,4 @@
-import { useReducer, Reducer } from "react"
+import { useReducer, Reducer, useRef, useEffect } from "react"
 import { MutationOptions, Mutation } from "kho"
 
 import { useAdvancedStore } from "./Provider"
@@ -62,6 +62,14 @@ export function useMutation<TResult, TArguments, TContext>(
   const store = useAdvancedStore()
   const { state, dispatch } = useCustomState<TResult>()
 
+  const mountedRef = useRef(false)
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  })
+
   const originalOptions = options
   const mutate = useCustomCallback(
     (
@@ -69,11 +77,13 @@ export function useMutation<TResult, TArguments, TContext>(
       options: Pick<MutationOptions<TResult, TArguments, TContext>, "arguments" | "context"> = {}
     ) => {
       const actualMutation = mutation.withOptions(originalOptions, options)
+      // prettier-ignore
       store.processMutation(actualMutation, {
         onRequest: () => dispatch({ type: "ACTION_REQUEST" }),
-        onError: (err) => dispatch({ type: "ACTION_FAILURE", payload: err }),
+        onError: (err) =>
+          mountedRef.current && dispatch({ type: "ACTION_FAILURE", payload: err }),
         onComplete: (data) =>
-          dispatch({ type: "ACTION_SUCCESS", payload: data }),
+          mountedRef.current && dispatch({ type: "ACTION_SUCCESS", payload: data }),
       })
     },
     [store, dispatch, mutation, originalOptions]
