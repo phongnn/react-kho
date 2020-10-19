@@ -47,7 +47,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "kho": "^0.4.1"
+    "kho": "^1.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
