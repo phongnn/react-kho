@@ -18,11 +18,12 @@ export interface DataLoadingState<TResult, TArguments, TContext> {
   refetch: () => void
   refetching: boolean
   refetchError: Error | null
+  retry: () => void
 }
 
 type DataLoadingAction<TResult, TArguments, TContext> =
   | { type: "ACTION_REQUEST" }
-  | { type: "ACTION_FAILURE"; payload: Error }
+  | { type: "ACTION_FAILURE"; payload: Error; internalRetry: () => void }
   | {
       type: "ACTION_SUCCESS"
       internalRefetch: InternalRefetchFn
@@ -52,6 +53,10 @@ const initialState: DataLoadingState<any, any, any> = {
   },
   refetching: false,
   refetchError: null,
+  retry: () => {
+    // prettier-ignore
+    throw new Error(`[react-kho] retry() can only be called if the initial request failed.`)
+  },
 }
 
 export function useDataLoadingState<TResult, TArguments, TContext>(
@@ -72,6 +77,7 @@ export function useDataLoadingState<TResult, TArguments, TContext>(
           loading: false,
           data: null,
           error: action.payload,
+          retry: action.internalRetry,
         }
       case "ACTION_SUCCESS":
         const { internalFetchMore, internalRefetch } = action
@@ -135,11 +141,11 @@ export function registerQuery<TResult, TArguments, TContext>(
   dispatch: React.Dispatch<DataLoadingAction<TResult, TArguments, TContext>>
 ) {
   // prettier-ignore
-  const { unregister, fetchMore, refetch } = store.registerQuery<TResult, TArguments, TContext>(
+  const { unregister, fetchMore, refetch, retry } = store.registerQuery<TResult, TArguments, TContext>(
     query, 
     {
       onRequest: () => dispatch({ type: "ACTION_REQUEST" }),
-      onError: (err) => dispatch({ type: "ACTION_FAILURE", payload: err }),
+      onError: (err) => dispatch({ type: "ACTION_FAILURE", payload: err, internalRetry: retry }),
       onComplete: () =>
         dispatch({
           type: "ACTION_SUCCESS",

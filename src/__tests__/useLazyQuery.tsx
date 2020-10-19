@@ -151,3 +151,39 @@ describe("call fetch more than once", () => {
     expect(await screen.findByText("data: 1")).toBeInTheDocument()
   })
 })
+
+describe("retry", () => {
+  let firstRequest = true
+  const query = new Query("GetW", () => {
+    if (firstRequest) {
+      firstRequest = false
+      return Promise.reject("some err")
+    } else {
+      return Promise.resolve("Hello!")
+    }
+  })
+
+  function MyComponent() {
+    const [fetchData, { data, error, retry }] = useLazyQuery(query)
+    return (
+      <div>
+        {data && <p>{data}</p>}
+        <button onClick={() => fetchData()}>Fetch</button>
+        {error && <button onClick={() => retry()}>Retry</button>}
+      </div>
+    )
+  }
+
+  it("should work", async () => {
+    render(
+      <Provider store={createStore()}>
+        <MyComponent />
+      </Provider>
+    )
+
+    jest.spyOn(console, "error").mockImplementation(() => {})
+    userEvent.click(screen.getByText("Fetch"))
+    userEvent.click(await screen.findByText("Retry"))
+    expect(await screen.findByText("Hello!")).toBeInTheDocument()
+  })
+})
