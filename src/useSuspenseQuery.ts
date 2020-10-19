@@ -98,7 +98,8 @@ function removeIfNotMounted(key: string) {
 export function useSuspenseQuery<TResult, TArguments, TContext>(
   key: string,
   query: Query<TResult, TArguments, TContext>,
-  options?: Omit<QueryOptions<TResult, TArguments, TContext>, "shape" | "merge">
+  // prettier-ignore
+  options?: Pick<QueryOptions<TResult, TArguments, TContext>, "arguments" | "context" | "expiryMs" | "fetchPolicy">
 ) {
   const store = useAdvancedStore()
   const realQuery = !options ? query : query.withOptions(options)

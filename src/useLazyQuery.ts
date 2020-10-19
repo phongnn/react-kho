@@ -9,29 +9,22 @@ import {
 } from "./common/useDataLoadingState"
 
 export function useLazyQuery<TResult, TArguments, TContext>(
-  query: Query<TResult, TArguments, TContext>,
-  options: Omit<
-    QueryOptions<TResult, TArguments, TContext>,
-    "shape" | "merge"
-  > = {}
+  query: Query<TResult, TArguments, TContext>
 ) {
   const store = useAdvancedStore()
   const { state, dispatch } = useDataLoadingState(query)
 
   const unregisterFn = useRef<() => void>()
-  const originalOptions = options
 
   const fetchData = (
-    options: Pick<
-      QueryOptions<TResult, TArguments, TContext>,
-      "arguments" | "context"
-    > = {}
+    // prettier-ignore
+    options?: Pick<QueryOptions<TResult, TArguments, TContext>, "arguments" | "context" | "expiryMs" | "fetchPolicy">
   ) => {
     if (unregisterFn.current) {
       unregisterFn.current() // clean up first, just in case user calls fetchData() more than once
     }
 
-    const actualQuery = query.withOptions(originalOptions, options)
+    const actualQuery = options ? query.withOptions(options) : query
     unregisterFn.current = registerQuery(store, actualQuery, dispatch)
   }
 

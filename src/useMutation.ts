@@ -1,8 +1,7 @@
-import { useReducer, Reducer, useRef, useEffect } from "react"
+import { useReducer, Reducer, useRef, useEffect, useCallback } from "react"
 import { MutationOptions, Mutation } from "kho"
 
 import { useAdvancedStore } from "./Provider"
-import { useCustomCallback } from "./common/customHooks"
 
 interface MutationState<TResult> {
   loading: boolean
@@ -53,11 +52,7 @@ function useCustomState<TResult>() {
 }
 
 export function useMutation<TResult, TArguments, TContext>(
-  mutation: Mutation<TResult, TArguments, TContext>,
-  options: Omit<
-    MutationOptions<TResult, TArguments, TContext>,
-    "shape" | "update"
-  > = {}
+  mutation: Mutation<TResult, TArguments, TContext>
 ) {
   const store = useAdvancedStore()
   const { state, dispatch } = useCustomState<TResult>()
@@ -70,13 +65,12 @@ export function useMutation<TResult, TArguments, TContext>(
     }
   })
 
-  const originalOptions = options
-  const mutate = useCustomCallback(
+  const mutate = useCallback(
     (
       // prettier-ignore
-      options: Pick<MutationOptions<TResult, TArguments, TContext>, "arguments" | "context"> = {}
+      options?: Pick<MutationOptions<TResult, TArguments, TContext>, "arguments" | "context" | "optimisticResponse" | "syncMode">
     ) => {
-      const actualMutation = mutation.withOptions(originalOptions, options)
+      const actualMutation = options ? mutation.withOptions(options) : mutation
       // prettier-ignore
       store.processMutation(actualMutation, {
         onRequest: () => dispatch({ type: "ACTION_REQUEST" }),
@@ -86,7 +80,7 @@ export function useMutation<TResult, TArguments, TContext>(
           mountedRef.current && dispatch({ type: "ACTION_SUCCESS", payload: data }),
       })
     },
-    [store, dispatch, mutation, originalOptions]
+    [store, dispatch, mutation]
   )
 
   return [mutate, state] as [typeof mutate, MutationState<TResult>]

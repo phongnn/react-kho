@@ -20,10 +20,7 @@ const mutation = new Mutation(
 )
 
 function MyComponent() {
-  const [mutate, { loading, error, called, data }] = useMutation(mutation, {
-    arguments: { test: true },
-    context: { blah: "BLAH" },
-  })
+  const [mutate, { loading, error, called, data }] = useMutation(mutation)
   return (
     <div>
       <button
@@ -61,7 +58,7 @@ it("should invoke mutate function and show success message", async () => {
   // prettier-ignore
   expect(screen.getByText("Data has been updated successfully.")).toBeInTheDocument()
 
-  expect(fn).toBeCalledWith({ x: { y: "z" } }, { token: "aaa", blah: "BLAH" })
+  expect(fn).toBeCalledWith({ x: { y: "z" } }, { token: "aaa", blah: "blah" })
 })
 
 it("should show mutation error", async () => {
