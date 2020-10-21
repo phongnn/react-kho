@@ -123,7 +123,7 @@ export function useSuspenseQuery<TResult, TArguments, TContext>(
 
             promiseFulfilled = true
             // user might have opened a different view by the time this request finishes -> clean up
-            setTimeout(() => removeIfNotMounted(key), 2000)
+            setTimeout(() => removeIfNotMounted(key), store.options.suspenseQueryMountTimeout)
             resolve()
           },
           onData: (data) => {
@@ -141,7 +141,7 @@ export function useSuspenseQuery<TResult, TArguments, TContext>(
 
             promiseFulfilled = true
             // user might have opened a different view by the time this request finishes -> clean up
-            setTimeout(() => removeIfNotMounted(key), 2000)
+            setTimeout(() => removeIfNotMounted(key), store.options.suspenseQueryMountTimeout)
             resolve()
           }
         }

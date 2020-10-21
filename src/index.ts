@@ -1,13 +1,6 @@
-export { Provider, useStore } from "./Provider"
-export { useQuery } from "./useQuery"
-export { useLazyQuery } from "./useLazyQuery"
-export { useLocalQuery } from "./useLocalQuery"
-export { useSuspenseQuery } from "./useSuspenseQuery"
-export { useMutation } from "./useMutation"
-
 export {
   Store,
-  createStore,
+  StoreOptions,
   Query,
   QueryOptions,
   LocalQuery,
@@ -16,3 +9,10 @@ export {
   NormalizedType,
   NormalizedObjectRef,
 } from "kho"
+
+export { Provider, useStore, createStore } from "./Provider"
+export { useQuery } from "./useQuery"
+export { useLazyQuery } from "./useLazyQuery"
+export { useLocalQuery } from "./useLocalQuery"
+export { useSuspenseQuery } from "./useSuspenseQuery"
+export { useMutation } from "./useMutation"

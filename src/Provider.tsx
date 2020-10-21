@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react"
-import { Store, AdvancedStore } from "kho"
+// prettier-ignore
+import { Store, AdvancedStore, StoreOptions, createStore as originalCreateStore } from "kho"
 
 const StoreContext = React.createContext<Store | null>(null)
 
@@ -26,4 +27,13 @@ export function useStore() {
     )
   }
   return store
+}
+
+export function createStore(options?: Partial<StoreOptions>) {
+  const {
+    suspenseQueryMountTimeout = 5 * 1000, // 5 seconds
+    ...rest
+  } = options || {}
+
+  return originalCreateStore({ suspenseQueryMountTimeout, ...rest })
 }
