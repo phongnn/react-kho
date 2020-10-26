@@ -1,14 +1,10 @@
 import React from "react"
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react"
+// prettier-ignore
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { Query, createStore } from "kho"
+import { Query } from "kho"
 
-import { Provider } from "../Provider"
-import { useLazyQuery } from "../useLazyQuery"
+import { Provider, createStore, useLazyQuery } from ".."
 
 describe("basic scenarios", () => {
   let fetcher: (args: { x: string; y: number }) => Promise<string>

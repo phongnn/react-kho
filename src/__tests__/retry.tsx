@@ -1,13 +1,10 @@
 import React from "react"
-import { Query, createStore } from "kho"
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react"
+// prettier-ignore
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { useQuery } from "../useQuery"
-import { Provider } from "../Provider"
+import { Query } from "kho"
+
+import { Provider, createStore, useQuery } from ".."
 
 let count = 0
 const query = new Query("GetData", () => {

@@ -1,14 +1,10 @@
 import React from "react"
-import { LocalMutation, createStore } from "kho"
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react"
+// prettier-ignore
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { LocalMutation } from "kho"
 
-import { useLocalMutation } from "../useLocalMutation"
-import { Provider } from "../Provider"
+import { Provider, createStore, useLocalMutation } from ".."
 
 const mutation = new LocalMutation<number>("UpdateData", {
   afterQueryUpdates: async (store, { mutationInput: input }) => {

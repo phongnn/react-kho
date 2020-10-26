@@ -1,10 +1,9 @@
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { LocalQuery, createStore } from "kho"
+import { LocalQuery } from "kho"
 
-import { Provider, useStore } from "../Provider"
-import { useLocalQuery } from "../useLocalQuery"
+import { Provider, useStore, createStore, useLocalQuery } from ".."
 
 const query = new LocalQuery<{ username: string }>("UserProfile")
 

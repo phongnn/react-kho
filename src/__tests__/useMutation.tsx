@@ -1,14 +1,10 @@
 import React from "react"
-import { Mutation, createStore } from "kho"
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react"
+// prettier-ignore
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { Mutation } from "kho"
 
-import { useMutation } from "../useMutation"
-import { Provider } from "../Provider"
+import { Provider, createStore, useMutation } from ".."
 
 let mutateFn: (args: any, ctx: any) => Promise<string>
 const mutation = new Mutation(

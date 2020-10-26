@@ -1,14 +1,10 @@
 import React, { useState } from "react"
-import { Query, createStore } from "kho"
-import {
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react"
+// prettier-ignore
+import { render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { useQuery } from "../useQuery"
-import { Provider } from "../Provider"
+import { Query } from "kho"
+
+import { useQuery, Provider, createStore } from ".."
 
 let count = 0
 let fetchData = () => new Promise((r) => setTimeout(() => r(++count)))

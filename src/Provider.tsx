@@ -29,11 +29,11 @@ export function useStore() {
   return store
 }
 
-export function createStore(options?: Partial<StoreOptions>) {
-  const {
-    suspenseQueryMountTimeout = 5 * 1000, // 5 seconds
-    ...rest
-  } = options || {}
-
-  return originalCreateStore({ suspenseQueryMountTimeout, ...rest })
-}
+export const createStore = (
+  // don't expose suspenseQueryMountTimeout option for now (maybe later if it becomes necessary)
+  options: Partial<Pick<StoreOptions, "preloadedState" | "queryExpiryMs">> = {}
+) =>
+  originalCreateStore({
+    suspenseQueryMountTimeout: 5 * 1000, // 5 seconds
+    ...options,
+  })

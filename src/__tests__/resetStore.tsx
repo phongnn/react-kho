@@ -1,11 +1,9 @@
 import React, { useEffect } from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { Mutation, createStore, Query } from "kho"
+import { Mutation, Query } from "kho"
 
-import { useQuery } from "../useQuery"
-import { useMutation } from "../useMutation"
-import { Provider, useStore } from "../Provider"
+import { useQuery, useStore, useMutation, Provider, createStore } from ".."
 
 let count = 0
 const query = new Query("GetData", () => Promise.resolve(++count))

@@ -1,8 +1,8 @@
 import React from "react"
-import { Query, createStore } from "kho"
 import { render, screen, waitFor } from "@testing-library/react"
-import { useQuery } from "../useQuery"
-import { Provider } from "../Provider"
+import { Query } from "kho"
+
+import { Provider, createStore, useQuery } from ".."
 
 let fetcher: (args: { id: string }) => Promise<any>
 const query = new Query("GetData", (args: { id: string }) => fetcher(args))

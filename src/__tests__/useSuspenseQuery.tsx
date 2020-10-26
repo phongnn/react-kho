@@ -1,14 +1,10 @@
 import React, { ReactElement, Suspense } from "react"
-import { Query, createStore } from "kho"
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react"
+// prettier-ignore
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { Query } from "kho"
 
-import { useSuspenseQuery } from "../useSuspenseQuery"
-import { Provider } from "../Provider"
+import { useSuspenseQuery, Provider, createStore } from ".."
 
 class ErrorBoundary extends React.Component {
   state: { error?: Error } = {}
