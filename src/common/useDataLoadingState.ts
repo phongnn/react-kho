@@ -12,6 +12,7 @@ export interface DataLoadingState<TResult, TArguments, TContext> {
   loading: boolean
   data: TResult | null
   error: Error | null
+  called: boolean
   fetchMore: FetchMoreFn<TResult, TArguments, TContext>
   fetchingMore: boolean
   fetchMoreError: Error | null
@@ -41,6 +42,7 @@ const initialState: DataLoadingState<any, any, any> = {
   loading: false,
   data: null,
   error: null,
+  called: false,
   fetchMore: () => {
     // prettier-ignore
     throw new Error(`[react-kho] fetchMore() can only be called after successful data loading.`)
@@ -76,6 +78,7 @@ export function useDataLoadingState<TResult, TArguments, TContext>(
           ...currentState,
           loading: false,
           data: null,
+          called: true,
           error: action.payload,
           retry: action.internalRetry,
         }
@@ -84,6 +87,7 @@ export function useDataLoadingState<TResult, TArguments, TContext>(
         return {
           ...currentState,
           loading: false,
+          called: true,
           refetch: () =>
             internalRefetch({
               onRequest: () => dispatch({ type: "ACTION_REFETCH_REQUEST" }),
