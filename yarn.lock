@@ -2704,10 +2704,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-kho@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/kho/-/kho-1.1.0.tgz#acbcb4cb5d9431e8d2521bcbebc05199b85fec5a"
-  integrity sha512-PKIUIAp5w98Uu7RTsLeQ/otWslWcYFxtEmu8CllJFyxSoIlpmsMtFJld4m1NT84EslFVRy9ThjgV4P2CgBPFlQ==
+kho@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/kho/-/kho-1.1.2.tgz#96cd17032bcb696bf74d439393605e18b248df49"
+  integrity sha512-qZZkkKHR8tnym+hKKbyi3+VF4bCN1l4eX9spdJ9ZgkVvibgkfAhaSrWKiwug0FZjfmJ6sLyBV2sTQwOId3nx2g==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
