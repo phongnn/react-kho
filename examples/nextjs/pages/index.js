@@ -31,7 +31,11 @@ export default function IndexPage() {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ resolvedUrl }) {
+  if (resolvedUrl.endsWith(".json")) {
+    return { props: {} };
+  }
+
   const store = createStore();
   await store.query(query);
   const preloadedState = store.getState();
