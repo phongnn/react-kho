@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useQuery, createStore } from "react-kho";
 
-import { query } from "./store";
+import { query } from "../store";
 
 export default function IndexPage() {
   const { data, fetchMore, fetchingMore } = useQuery(query);
