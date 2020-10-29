@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { useQuery, createStore } from "react-kho";
+import Link from "next/link"
+import { useQuery, createStore } from "react-kho"
 
-import { query } from "../store";
+import { query } from "../store"
 
 export default function IndexPage() {
-  const { data, fetchMore, fetchingMore } = useQuery(query);
+  const { data, fetchMore, fetchingMore } = useQuery(query)
   return (
     <div>
       <nav>
@@ -28,17 +28,18 @@ export default function IndexPage() {
         </>
       )}
     </div>
-  );
+  )
 }
 
 export async function getServerSideProps({ resolvedUrl }) {
+  console.log("**** resolvedUrl: ", resolvedUrl)
   if (resolvedUrl.endsWith(".json")) {
-    return { props: {} };
+    return { props: {} }
   }
 
-  const store = createStore();
-  await store.query(query);
-  const preloadedState = store.getState();
-  delete preloadedState.cache.queries[0].arguments;
-  return { props: { preloadedState } };
+  const store = createStore()
+  await store.query(query)
+  const preloadedState = store.getState()
+  delete preloadedState.cache.queries[0].arguments
+  return { props: { preloadedState } }
 }
