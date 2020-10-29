@@ -31,9 +31,9 @@ export default function IndexPage() {
   )
 }
 
-export async function getServerSideProps({ resolvedUrl }) {
-  console.log("**** resolvedUrl: ", resolvedUrl)
-  if (resolvedUrl.endsWith(".json")) {
+export async function getServerSideProps({ req }) {
+  console.log("**** url: ", req.url)
+  if (req.url.endsWith(".json")) {
     return { props: {} }
   }
 
