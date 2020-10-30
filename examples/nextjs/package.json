@@ -11,7 +11,7 @@
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-kho": "1.1.1"
+    "react-kho": "1.1.3"
   },
   "license": "MIT",
   "keywords": [

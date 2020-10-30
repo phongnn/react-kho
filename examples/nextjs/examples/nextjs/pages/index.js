@@ -31,8 +31,8 @@ export default function IndexPage() {
   );
 }
 
-export async function getServerSideProps({ resolvedUrl }) {
-  if (resolvedUrl.endsWith(".json")) {
+export async function getServerSideProps({ req }) {
+  if (req.url.endsWith(".json")) {
     return { props: {} };
   }
 

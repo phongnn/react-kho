@@ -3099,10 +3099,10 @@ json5@^2.1.0, json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
-kho@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/kho/-/kho-1.1.2.tgz#96cd17032bcb696bf74d439393605e18b248df49"
-  integrity sha512-qZZkkKHR8tnym+hKKbyi3+VF4bCN1l4eX9spdJ9ZgkVvibgkfAhaSrWKiwug0FZjfmJ6sLyBV2sTQwOId3nx2g==
+kho@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/kho/-/kho-1.1.4.tgz#2759144660d80869d3f712744af696d1ade21f67"
+  integrity sha512-bG80kgdeOSIVbx09+QyfJhxL/bBBri8JB6t8VgS/CTCb83IN2qDgUzJpYoKvyP9YusEhS6SViZ/bbks6AKyHbg==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
@@ -4026,12 +4026,12 @@ react-is@16.13.1, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-kho@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-kho/-/react-kho-1.1.1.tgz#c633ab28e317bd0df213d7a27eac6bd05a1a4e81"
-  integrity sha512-ig4nYOY/WIM/UUjwq837Pc0rudsxWlRZfwvf4HLrIoLzF5mLQPxUg7x+46zqVP1gxvB1pvlKkM+aFAD3dBzNFw==
+react-kho@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-kho/-/react-kho-1.1.3.tgz#d764addd458753fb83043b98d5c99d47959e7b19"
+  integrity sha512-VrMJzZrLqrdN963bP7FVb3+DjcN9oztHI7kkBzHl36v3494rk3FNHu2dabZGO2y2tmf6ob2IAEnYxXhKs2QwhA==
   dependencies:
-    kho "^1.1.2"
+    kho "^1.1.4"
 
 react-refresh@0.8.3:
   version "0.8.3"
