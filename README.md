@@ -10,11 +10,11 @@
   </a>
 </p>
 
-React hooks for a [Kho](https://github.com/phongnn/kho) store which _fetches_, **_normalizes_**, and _caches_ data for your application.
+A state management library which _fetches_, **_normalizes_**, and _caches_ data for your React application.
 
-### Features
+## Features
 
-What makes _react-kho_ different from other data fetching libraries is that it **normalizes** data in the cache. That means when some objects are updated, the changes will automatically reflect in all the related queries without you having to do anything.
+What makes _react-kho_ different from other data fetching libraries is that it **normalizes** data in the cache. Which means when some objects change, all the related queries will be updated automatically without you having to do anything.
 
 - Transport and protocol agnostic data fetching
 - Data normalization
@@ -24,8 +24,8 @@ What makes _react-kho_ different from other data fetching libraries is that it *
 - Infinite scroll queries
 - Local state
 - Mutations with query revalidation
-- Local mutations for use with WebSocket or SSE
-- Cache reset and query revalidation upon user sign in/out
+- Local mutations (e.g. for use with WebSocket or SSE)
+- Cache reset and query revalidation (e.g. upon user sign in/out)
 - TypeScript support
 - SSR support
 - React Suspense support
@@ -34,52 +34,158 @@ What makes _react-kho_ different from other data fetching libraries is that it *
 
 <br/>
 
-## Quick Start
+## Usage
 
-```js
+Inside your React project directory, run `npm install react-kho` or `yarn add react-kho`.
+
+<br/>
+
+## In a Nutshell
+
+Let's say you're working on a blog application that allows users to post articles and comments.
+
+First, register these types like so:
+
+```typescript
+// store/types.ts
+import { NormalizedType as Type } from "react-kho"
+
+export const UserType = Type.register("User", { keyFields: ["username"] })
+
+export const CommentType = Type.register("Comment", {
+  shape: { author: UserType },
+}) // key field is "id" by default
+
+export const ArticleType = Type.register("Article", {
+  keyFields: ["slug"],
+  shape: {
+    author: UserType,
+    comments: [CommentType],
+  },
+})
+```
+
+Next, define your query object:
+
+```typescript
+// store/queries.ts
 import { Query } from "react-kho"
+import { ArticleType } from "./types"
+import { getGlobalFeed } from "../api"
 
-// use REST, GraphQL or any async function
-export const articleQuery = new Query("Article", (args) =>
-  getArticle(args.slug)
+export const globalFeedQuery = new Query(
+  "GlobalFeed",
+  (args: { limit: number; offset: number }) =>
+    getGlobalFeed(args.limit, args.offset),
+  {
+    shape: { articles: [ArticleType] },
+  }
 )
 ```
 
-```js
-import { useQuery } from "react-kho"
-import { articleQuery } from "./store.js"
+You can then use the query from your UI:
 
-function ArticleView() {
-  const { loading, data, error } = useQuery(articleQuery)
-  if (loading) return <div>loading...</div>
-  if (error) return <div>{error.message}</div>
-  return <div>{data.title}</div>
+```typescript
+// views/Home/index.tsx
+import { useQuery } from "react-kho"
+import { globalFeedQuery } from "../../store"
+
+function GlobalFeed() {
+  const { loading, data, error } = useQuery(globalFeedQuery, {
+    arguments: { limit: 10, offset: 0 },
+  })
+
+  if (loading) {
+    return <p>Loading...</p>
+  } else if (error) {
+    return <p>{error.message}</p>
+  } else if (data) {
+    const { articlesCount, articles } = data
+    return articlesCount === 0 ? (
+      <p>No articles found.</p>
+    ) : (
+      <ArticleList articles={articles} />
+    )
+  }
+  return null
 }
 ```
 
+```typescript
+// index.tsx
+import { Provider, createStore } from "react-kho"
+
+ReactDOM.render(
+  <Provider store={createStore()}>
+    <App />
+  </Provider>
+)
+```
+
+Now if you need to update an article, define a mutation object:
+
+```typescript
+// store/mutations/articles.ts
+import { Mutation } from "react-kho"
+import { ArticleType } from "../types"
+import { updateArticle } from "../../api"
+
+export const updateArticleMutation = new Mutation(
+  "UpdateArticle",
+  (args: { slug: string; input: any }) => updateArticle(args.slug, args.input),
+  {
+    resultShape: ArticleType, // updateArticle() should return Promise<Article>
+  }
+)
+```
+
+And use the mutation from the UI:
+
+```typescript
+// views/EditArticle/index.tsx
+import { useHistory, useParams } from "react-router-dom"
+import { useMutation } from "react-kho"
+import { updateArticleMutation } from "../../store"
+
+function EditArticle() {
+  const { slug } = useParams<{ slug: string }>()
+  const browserHistory = useHistory()
+  const [updateArticle, { loading, error, data, called }] = useMutation(
+    updateArticleMutation
+  )
+
+  useEffect(() => {
+    if (called && !error) {
+      browserHistory.push(`/articles/${slug}`)
+    }
+  }, [slug, called, error])
+
+  if (loading) {
+    return <p>Loading...</p>
+  } else if (error) {
+    return <p>{error.message}</p>
+  } else {
+    return (
+      <ArticleForm
+        slug={slug}
+        onSubmit={(input: any) => updateArticle({ arguments: { slug, input } })}
+      />
+    )
+  }
+}
+```
+
+The good thing about `react-kho` is that all the related queries will be updated automatically.
+
 <br/>
 
-## Usage
+## Learn More
 
-Inside your React project directory, run the following:
-
-```
-yarn add react-kho
-```
-
-Or with npm:
-
-```
-npm install react-kho
-```
-
-<br/>
-
-## Documentation
-
-<br/>
-
-## API Reference
+- [Concepts & Guides](docs/guides)
+- [Examples](docs/examples)
+- [Real world demo](https://github.com/phongnn/react-kho-realworld-demo) (Conduit frontend)
+- [Gotchas](docs/gotchas)
+- DevTools (Coming soon)
 
 <br/>
 
