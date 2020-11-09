@@ -1,7 +1,5 @@
 ### Data Normalization
 
-**Contents**
-
 - [What is data normalization?](#what-is-data-normalization)
 - [Is data normalization mandatory?](#is-data-normalization-mandatory)
 - [How to use data normalization with Kho?](#how-to-use-data-normalization-with-kho)
@@ -29,7 +27,7 @@ Backends usually return data that is nested. For example, we may have users and 
 If we store the data as it is into our client-side cache, we may have problems with data updates. In the example above, when we want to change a user's avatar, we will have to find and update it in multiple places.
 That's rather inconvenient and prone to errors.
 
-Data normalization process moves nested objects out and replaces them with references. This way, each object has only a single copy in the cache, and thus can be easily updated. The article above looks like this after being normalized:
+Data normalization process moves nested objects out and replaces them with references. This way, each object has only a single copy in the cache, and thus can be easily updated. The article above looks somewhat like this after being normalized:
 
 ```json
 {
@@ -88,9 +86,9 @@ For example, if you have a query that returns data in the following format:
 
 ```json
 {
-  articlesCount: 53,
-  hasNext: true,
-  articles: [
+  "articlesCount": 53,
+  "hasNext": true,
+  "articles": [
       { ... },
       { ... },
   ]
