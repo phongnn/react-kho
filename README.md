@@ -181,10 +181,9 @@ The good thing about `react-kho` is that all the related queries will be updated
 
 ## Learn More
 
-- [Concepts & Guides](docs/guides)
-- [Examples](docs/examples)
+- [Concepts & Guides](docs#concepts-guides)
+- [Examples](docs#examples)
 - [Real world demo](https://github.com/phongnn/react-kho-realworld-demo) (Conduit frontend)
-- [Gotchas](docs/gotchas)
 - DevTools (Coming soon)
 
 <br/>
