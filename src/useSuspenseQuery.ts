@@ -96,13 +96,19 @@ function removeIfNotMounted(key: string) {
 }
 
 export function useSuspenseQuery<TResult, TArguments, TContext>(
-  key: string,
+  // key: string,
   query: Query<TResult, TArguments, TContext>,
   // prettier-ignore
-  options?: Pick<QueryOptions<TResult, TArguments, TContext>, "arguments" | "context" | "expiryMs" | "fetchPolicy">
+  options?: { key?: string } & Pick<QueryOptions<TResult, TArguments, TContext>, "arguments" | "context" | "expiryMs" | "fetchPolicy">
 ) {
   const store = useAdvancedStore()
   const realQuery = !options ? query : query.withOptions(options)
+  const key =
+    options && options.key
+      ? options.key
+      : !realQuery.options.arguments
+      ? realQuery.name
+      : `${realQuery.name}--${JSON.stringify(realQuery.options.arguments)}`
 
   const existingEntry = suspenseQueryRegistry.get(key)
   if (!existingEntry) {

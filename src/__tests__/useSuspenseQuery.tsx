@@ -34,7 +34,7 @@ describe("basic cases", () => {
   const query = new Query("GetData", () => fetcher())
 
   function DataLoadingComponent() {
-    const { data } = useSuspenseQuery("DLC", query)
+    const { data } = useSuspenseQuery(query)
     return data ? <p>{data}</p> : null
   }
 
@@ -60,7 +60,7 @@ describe("refetch()", () => {
   const query = new Query("TestRefetch", () => Promise.resolve(++count))
 
   function MyComponent() {
-    const { data, refetch, refetching } = useSuspenseQuery("TestRefetch", query)
+    const { data, refetch, refetching } = useSuspenseQuery(query)
     return !data ? null : (
       <div>
         <p>data: {data}</p>
@@ -85,10 +85,7 @@ describe("fetchMore()", () => {
   })
 
   function MyComponent() {
-    const { data, fetchMore, fetchingMore } = useSuspenseQuery(
-      "FetchMore",
-      query
-    )
+    const { data, fetchMore, fetchingMore } = useSuspenseQuery(query)
     return !data ? null : (
       <div>
         <p>data: {data}</p>
@@ -123,12 +120,12 @@ describe("multiple components", () => {
   )
 
   function ProfileDetails() {
-    const { data } = useSuspenseQuery("ProfileDetails", profileQuery)
+    const { data } = useSuspenseQuery(profileQuery)
     return <p>{data}</p>
   }
 
   function ProfileTimeline() {
-    const { data } = useSuspenseQuery("Timeline", timelineQuery)
+    const { data } = useSuspenseQuery(timelineQuery)
     return <p>{data}</p>
   }
 
