@@ -6,10 +6,6 @@ declare module "kho" {
   }
 }
 
-export interface FetchMoreFn<TResult, TArguments, TContext> {
-  (options?: {
-    arguments?: TArguments
-    context?: TContext
-    query?: Query<TResult, TArguments, TContext>
-  }): void
+export interface FetchMoreFn<TArguments, TContext> {
+  (options?: { arguments?: TArguments; context?: TContext }): void
 }

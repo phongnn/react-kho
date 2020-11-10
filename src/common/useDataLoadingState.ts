@@ -13,7 +13,7 @@ export interface DataLoadingState<TResult, TArguments, TContext> {
   data: TResult | null
   error: Error | null
   called: boolean
-  fetchMore: FetchMoreFn<TResult, TArguments, TContext>
+  fetchMore: FetchMoreFn<TArguments, TContext>
   fetchingMore: boolean
   fetchMoreError: Error | null
   refetch: () => void
@@ -96,8 +96,8 @@ export function useDataLoadingState<TResult, TArguments, TContext>(
               onComplete: () => dispatch({ type: "ACTION_REFETCH_SUCCESS" }),
             }),
           // prettier-ignore
-          fetchMore: ({ arguments: args, context, query: anotherQuery } = {}) => {
-            const nextQuery = (anotherQuery || query).withOptions({
+          fetchMore: ({ arguments: args, context } = {}) => {
+            const nextQuery = query.withOptions({
               arguments: args,
               context,
             })

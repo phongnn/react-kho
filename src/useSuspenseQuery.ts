@@ -210,6 +210,6 @@ export function useSuspenseQuery<TResult, TArguments, TContext>(
   return {
     ...state,
     refetch,
-    fetchMore: fetchMore as FetchMoreFn<TResult, TArguments, TContext>,
+    fetchMore: fetchMore as FetchMoreFn<TArguments, TContext>,
   }
 }
