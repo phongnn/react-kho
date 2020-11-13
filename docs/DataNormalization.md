@@ -1,10 +1,10 @@
-### Data Normalization
+# Data Normalization
 
 - [What is data normalization?](#what-is-data-normalization)
 - [Is data normalization mandatory?](#is-data-normalization-mandatory)
 - [How to use data normalization with Kho?](#how-to-use-data-normalization-with-kho)
 
-#### What is data normalization?
+## What is data normalization?
 
 Backends usually return data that is nested. For example, we may have users and comments inside an article's data like so:
 
@@ -39,11 +39,11 @@ Data normalization process moves nested objects out and replaces them with refer
 }
 ```
 
-#### Is data normalization mandatory?
+## Is data normalization mandatory?
 
 No. With Kho, you can normalize some queries while keeping the others as is.
 
-#### How to use data normalization with Kho?
+## How to use data normalization with Kho?
 
 You have to register normalized types then use them to define the shape of your queries/mutation results.
 

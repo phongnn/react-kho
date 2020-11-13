@@ -26,6 +26,7 @@ What makes _react-kho_ different from other data fetching libraries is that it *
 - Mutations with query revalidation
 - Local mutations (e.g. for use with WebSocket or SSE)
 - Cache reset and query revalidation (e.g. upon user sign in/out)
+- Mutation's optimistic response
 - TypeScript support
 - SSR support
 - React Suspense support
