@@ -17,7 +17,7 @@ import { Mutation } from "react-kho"
 import { updateArticle } from "../api"
 import { ArticleType } from "./normalizedTypes"
 
-const query = new Mutation("UpdateArticle", updateArticle, {
+const mutation = new Mutation("UpdateArticle", updateArticle, {
   resultShape: ArticleType,
 })
 ```
@@ -262,3 +262,22 @@ This hook returns a tuple that has two elements:
 | data     | any     | Return value from backend                               |
 | error    | Error   | Error that occurs during the processing of the mutation |
 | called   | boolean | Has the mutation completed yet?                         |
+
+**Example**:
+
+```typescript
+export function ArticleView() {
+  const [followUser, { loading, called, error }] = useMutation(followUserMutation)
+
+  useEffect(() => {
+    if (called && !error) {
+      // show a toast
+    }
+  }, [called, error])
+
+  return (
+    <div>
+      <button onClick={() => followUser({ username })}>Follow</button>
+    </div>
+  )
+```
