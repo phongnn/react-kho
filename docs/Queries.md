@@ -1,5 +1,7 @@
 # Queries
 
+You have to define a query in order to fetch data from backend.
+
 - [Query objects](#query-objects)
 - [Data fetching function](#data-fetching-function)
 - [Query options](#query-options)
@@ -10,7 +12,7 @@
 
 ## Query objects
 
-You have to define a query in order to fetch data from backend. The `Query` constructor takes three arguments: a _unique_ name, an _asynchronous_ data fetching function and, optionally, an object for query options:
+The `Query` constructor takes three arguments: a _unique_ name, an _asynchronous_ data fetching function and, optionally, an object for query options:
 
 ```javascript
 import { Query } from "react-kho"
