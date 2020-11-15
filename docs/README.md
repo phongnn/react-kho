@@ -2,6 +2,7 @@
 
 ### Concepts & Guides
 
+- [Creating Kho store](CreateStore.md)
 - [Data normalization](DataNormalization.md)
 - [Queries](Queries.md)
 - [Mutations](Mutations.md)

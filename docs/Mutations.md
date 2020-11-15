@@ -1,12 +1,12 @@
 # Mutations
 
-A mutation represents a request to update data at backend. If you want to update data in client-side cache only, use a [local mutation](LocalMutation.md) instead.
+A mutation represents a request to update data at backend. If you want to update data in client-side cache only, use a [local mutation](LocalMutations.md) instead.
 
 - [Mutation objects](#mutation-objects)
 - [Mutation function](#mutation-function)
 - [Updating client-side cache](#updating-client-side-cache)
 - [Other mutation options](#other-mutation-options)
-- [useMutation hook](#usemutation-hook)
+- [`useMutation` hook](#usemutation-hook)
 
 ## Mutation objects
 

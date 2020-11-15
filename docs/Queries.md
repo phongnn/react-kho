@@ -48,16 +48,16 @@ If you use TypeScript, make sure to declare the return type for the underlying d
 
 ## Query options
 
-| Option       | Description                                                                                                                                                             | Default value     |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| arguments    | Default arguments for the data fetching function.                                                                                                                       | None              |
-| context      | Default context value for the data fetching function.                                                                                                                   | None              |
-| expiryMs     | Specifies when this query's data expires and needs to be refetched (only if it's still active; it will be removed otherwise)                                            | 900,000 (15 mins) |
-| shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md).                                                                            | None              |
-| fetchPolicy  | `cache-first`, `cache-and-network`, `network-only`                                                                                                                      | `cache-first`     |
-| merge        | For [infinite scroll queries](Recipes.md#infinite-scroll-queries)                                                                                                       | None              |
-| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#update-other-queries-based-on-a-query-s-data)                                                 | None              |
-| selector     | Only needed when the first request to backend may return blank result AND you want to update this query's data from a related mutation/query. See [gotchas](Gotchas.md) | None              |
+| Option       | Description                                                                                                                                                             | Default value           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| arguments    | Default arguments for the data fetching function.                                                                                                                       | None                    |
+| context      | Default context value for the data fetching function.                                                                                                                   | None                    |
+| expiryMs     | Specifies when this query's data expires and needs to be refetched (only if it's still active; it will be removed otherwise)                                            | Store's `queryExpiryMs` |
+| shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md).                                                                            | None                    |
+| fetchPolicy  | `cache-first`, `cache-and-network`, `network-only`                                                                                                                      | `cache-first`           |
+| merge        | For [infinite scroll queries](Recipes.md#infinite-scroll-queries)                                                                                                       | None                    |
+| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#update-other-queries-based-on-a-query-s-data)                                                 | None                    |
+| selector     | Only needed when the first request to backend may return blank result AND you want to update this query's data from a related mutation/query. See [gotchas](Gotchas.md) | None                    |
 
 ## Hooks: when to use which?
 

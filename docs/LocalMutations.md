@@ -44,7 +44,9 @@ function useLocalMutation(
 
 This hook returns a tuple that has two elements:
 
-- A function to call when you want to start processing the local mutation. The function takes an object with two properties: `input` - data in _non-normalized_ format, and `syncMode` - if set to `true`, the mutation only completes when `afterQueryUpdates` has finished (default value is `false`).
+- A function to call when you want to start processing the local mutation. The function takes an object with two properties:
+  - `input`: data in _non-normalized_ format
+  - `syncMode`: if set to `true`, the mutation only completes when `afterQueryUpdates` has finished (default value is `false`).
 - An object which represents the mutation's state. It has the following properties:
 
 | Property | Type    | Description                                             |
