@@ -24,10 +24,9 @@ Backends usually return data that is nested. For example, we may have users and 
 }
 ```
 
-If we store the data as it is into our client-side cache, we may have problems with data updates. In the example above, when we want to change a user's avatar, we will have to find and update it in multiple places.
-That's rather inconvenient and prone to errors.
+If we store the data as it is into our client-side cache, we may have problems with data updates. In the example above, when we want to change a user's avatar, we will have to find and update it in multiple places. Doing so is inconvenient and prone to errors.
 
-Data normalization process moves nested objects out and replaces them with references. This way, each object has only a single copy in the cache, and thus can be easily updated. The article above looks somewhat like this after being normalized:
+Data normalization moves nested objects out and replaces them with references. This way, each object has only a single copy in the cache, and thus can be easily updated. The article above looks somewhat like this after being normalized:
 
 ```json
 {
@@ -45,9 +44,9 @@ No. With Kho, you can normalize some queries while keeping the others as is.
 
 ## How to use data normalization with Kho?
 
-You have to register normalized types then use them to define the shape of your queries/mutation results.
+You have to **register normalized types** then use them to **define the shape of your queries/mutation results**.
 
-**Registering normalized types**
+**1. Registering normalized types**
 
 It could be as simple as this:
 
@@ -67,7 +66,7 @@ const OrderItemType = NormalizedType.register("OrderItem", {
 })
 ```
 
-If your normalized type contains other types' data, you will need to define its shape (so that Kho knows how to parse it):
+If your normalized type contains other types' data, you will need to define its shape so that Kho knows how to parse it:
 
 ```javascript
 const ArticleType = NormalizedType.register("Article", {
@@ -78,7 +77,17 @@ const ArticleType = NormalizedType.register("Article", {
 })
 ```
 
-**Defining a query/mutation's shape**
+When defining a normalized type's shape, if you need to use a type not yet registered (e.g. in cases of circular reference), you can use `NormalizedType.of()` like so:
+
+```javascript
+const ArticleType = NormalizedType.register("Article", {
+  shape: {
+    comments: [NormalizedType.of("Comment")],
+  },
+})
+```
+
+**2. Defining a query/mutation's shape**
 
 After registering normalized types, you can use them to define the shape of a query's data or a mutation's result.
 
@@ -89,8 +98,8 @@ For example, if you have a query that returns data in the following format:
   "articlesCount": 53,
   "hasNext": true,
   "articles": [
-      { ... },
-      { ... },
+    { ... },
+    { ... },
   ]
 }
 ```

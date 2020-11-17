@@ -15,9 +15,9 @@ ReactDOM.render(
 
 `createStore()` accepts an object that allows you to specify the following options:
 
-| Option         | Description                                                                                              | Default value     |
-| -------------- | -------------------------------------------------------------------------------------------------------- | ----------------- |
-| queryExpiryMs  | Default value for queries' `expiryMs` which determines when it expires and needs refetching from backend | 900,000 (15 mins) |
-| preloadedState | Usually used for server-side rendering (SSR) to restore the Kho store                                    | None              |
+| Option         | Description                                                                                                      | Default value     |
+| -------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| queryExpiryMs  | Default value for queries' `expiryMs` which determines when query data expires and needs refetching from backend | 900,000 (15 mins) |
+| preloadedState | Usually used for server-side rendering (SSR) to restore the Kho store                                            | None              |
 
 See [Store API](StoreAPI.md) for how to use Store's methods.

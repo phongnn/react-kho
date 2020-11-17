@@ -1,35 +1,39 @@
 # Local Queries
 
-Simply put, a local query is a query without a data fetching function. You can use it to handle client state, for example, information of the currently logged in user.
+Simply put, a local query is a query without a data fetching function. You can use it to handle client state, for example, information of the currently signed in user.
 
-### Local query objects
+## Local query objects
 
 The `LocalQuery` constructor takes two arguments: a _unique_ name and an object for query options:
 
-```typescript
+```javascript
 import { LocalQuery } from "react-kho"
 import { UserType } from "./normalizedTypes"
 
-const signedInUserQuery = new LocalQuery<User | null>("SignedInUser", {
+const signedInUserQuery = new LocalQuery("SignedInUser", {
   shape: UserType,
   initialValue: null,
 })
 ```
 
-### Using a local query's data from views
+If you're using TypeScript, do it like so to enjoy the benefit of auto-completion:
 
-The `useLocalQuery` hook allows views to access the local query's data:
+```typescript
+const signedInUserQuery = new LocalQuery<User | null>(...)
+```
+
+## Using a local query's data from views
+
+`useLocalQuery` hook allows views to access the local query's data:
 
 ```javascript
 function MyComponent {
-  const { data: user } = useLocalQuery(signedInUserQuery)
-  return (
-      /* UI here */
-  )
+  const { data: { name, email } } = useLocalQuery(signedInUserQuery)
+  return <p>Hello, {name}!</p>
 }
 ```
 
-### Updating a local query's data
+## Updating a local query's data
 
 There are generally two options for updating a local query's data:
 
@@ -46,7 +50,7 @@ const signInMutation = new Mutation("SignIn", signIn, {
 })
 ```
 
-### Local query options
+## Local query options
 
 | Option       | Description                                                                                                             | Default value |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------- |

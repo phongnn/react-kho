@@ -33,31 +33,29 @@ This function should return a promise or use the `async` keyword. It accepts as 
 - `args` contains the arguments required for data fetching.
 - `context` can be used for passing metadata such as HTTP request headers.
 
-```typescript
+```javascript
 import { Query } from "react-kho"
 import { getGlobalFeed } from "../api"
 
-const globalFeedQuery = new Query(
-  "GlobalFeed",
-  (args: { limit: number; offset: number }) =>
-    getGlobalFeed(args.limit, args.offset)
+const globalFeedQuery = new Query("GlobalFeed", (args, ctx) =>
+  getGlobalFeed(args.limit, args.offset)
 )
 ```
 
-If you use TypeScript, make sure to declare the return type for the underlying data fetching function (`getGlobalFeed()` in the above snippet) to enjoy full benefits of auto-completion when working with hooks.
+If you use TypeScript, make sure to declare the return type for the underlying data fetching function (`getGlobalFeed()` in the above snippet) to enjoy full benefits of auto-completion.
 
 ## Query options
 
-| Option       | Description                                                                                                                                                             | Default value           |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| arguments    | Default arguments for the data fetching function.                                                                                                                       | None                    |
-| context      | Default context value for the data fetching function.                                                                                                                   | None                    |
-| expiryMs     | Specifies when this query's data expires and needs to be refetched (only if it's still active; it will be removed otherwise)                                            | Store's `queryExpiryMs` |
-| shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md).                                                                            | None                    |
-| fetchPolicy  | `cache-first`, `cache-and-network`, `network-only`                                                                                                                      | `cache-first`           |
-| merge        | For [infinite scroll queries](Recipes.md#infinite-scroll-queries)                                                                                                       | None                    |
-| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#update-other-queries-based-on-a-query-s-data)                                                 | None                    |
-| selector     | Only needed when the first request to backend may return blank result AND you want to update this query's data from a related mutation/query. See [gotchas](Gotchas.md) | None                    |
+| Option       | Description                                                                                                                                                                        | Default value           |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| arguments    | Default arguments for the data fetching function.                                                                                                                                  | None                    |
+| context      | Default context value for the data fetching function.                                                                                                                              | None                    |
+| expiryMs     | Specifies when this query's data expires and needs to be refetched (only if it's still active; inactive query will be removed from cache)                                          | Store's `queryExpiryMs` |
+| shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md).                                                                                       | None                    |
+| fetchPolicy  | `cache-first`, `cache-and-network`, `network-only`                                                                                                                                 | `cache-first`           |
+| merge        | For [infinite scroll queries](Recipes.md#infinite-scroll-queries)                                                                                                                  | None                    |
+| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#update-other-queries-based-on-a-query-s-data)                                                            | None                    |
+| selector     | Only needed when the first request to backend may return blank result AND you want to update this query's data from a related mutation/query. See [caution](Cautions.md#selector). | None                    |
 
 ## Hooks: when to use which?
 
@@ -65,21 +63,34 @@ Use a suitable hook depending on _when_ you want to fetch data:
 
 - `useQuery`: fetches data when component is mounted (fetch on render). This is what you need in most cases.
 - `useLazyQuery`: fetches data on demand.
-- `useSuspenseQuery`: render as you fetch, for use with React's Suspense mode.
+- `useSuspenseQuery`: render as you fetch, for use with React's Suspense.
 
 ## useQuery
 
-```typescript
-function useQuery(
-  query: Query,
-  options?: Pick<
-    QueryOptions,
-    "arguments" | "context" | "expiryMs" | "fetchPolicy"
-  >
-): DataLoadingState
+This hook fetches data when component is mounted.
+
+```javascript
+import { useQuery } from "react-kho"
+import { globalFeedQuery } from "../store"
+
+function MyComponent() {
+  const { loading, error, data } = useQuery(globalFeedQuery, {
+    arguments: { limit: 20, offset: 0 },
+  })
+
+  if (loading) {
+    return <p>loading...</p>
+  } else if (error) {
+    return <p>{error.message}</p>
+  } else if (data) {
+    return data.map(({ slug, title }) => <p key={slug}>{title}</p>)
+  } else {
+    return null
+  }
+}
 ```
 
-This hook fetches data when component is mounted. It returns an object with the following properties:
+`useQuery` takes as input a query object and, optionally, an object which allows you to specify/override some query options: `arguments`, `context`, `expiryMs`, and `fetchPolicy`. The hook returns an object with the following properties:
 
 | Property       | Type     | Description                                                                                                                                   |
 | -------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -97,38 +108,67 @@ This hook fetches data when component is mounted. It returns an object with the 
 
 ## useLazyQuery
 
-```typescript
-function useLazyQuery(
-  query: Query
-): [
-  (
-    options?: Pick<
-      QueryOptions,
-      "arguments" | "context" | "expiryMs" | "fetchPolicy"
-    >
-  ) => void,
-  DataLoadingState
-]
+This hook fetches data on demand. It returns a function to call whenever you want to fetch data, and an object which represents the data fetching state.
+
+```javascript
+import { useLazyQuery } from "react-kho"
+import { globalFeedQuery } from "../store"
+
+function MyComponent() {
+  const [getFeed, { loading, error, data }] = useLazyQuery(globalFeedQuery)
+  return (
+    <div>
+      <button
+        disabled={loading}
+        onClick={() =>
+          getFeed({
+            arguments: { limit: 20, offset: 0 },
+          })
+        }
+      >
+        Load
+      </button>
+      {error && <p>Error: {error.message}</p>}
+      {data && data.map(({ slug, title }) => <p key={slug}>{title}</p>)}
+    </div>
+  )
+}
 ```
 
-This hook fetches data on demand. It returns a tuple that has two elements:
+When calling the function to fetch data, you can provide an object to specify/override some query options: `arguments`, `context`, `expiryMs`, and `fetchPolicy`.
 
-- A function to call when you want to fetch data.
-- An object which represents the data fetching state. It is the same as the object described in [`useQuery`](#usequery)
+`useLazyQuery` has the same properties of data fetching state as [`useQuery`](#usequery).
 
 ## useSuspenseQuery
 
-```typescript
-function useSuspenseQuery(
-  query: Query,
-  options?: Pick<
-    QueryOptions,
-    "arguments" | "context" | "expiryMs" | "fetchPolicy"
-  > & { key?: string }
-): DataLoadingState
+This hook allows views to render while data is being fetched. It must be used with `Suspense`. It's important to note that Suspense for data fetching is still an an [experimental feature](https://reactjs.org/docs/concurrent-mode-suspense.html) and not recommended for use in production.
+
+```javascript
+import { useSuspenseQuery } from "react-kho"
+import { globalFeedQuery } from "../store"
+
+function MyComponent() {
+  const { data } = useSuspenseQuery(globalFeedQuery, {
+    arguments: { limit: 20, offset: 0 },
+  })
+
+  return !data ? null : data.map(({ slug, title }) => <p key={slug}>{title}</p>)
+}
 ```
 
-This hook allows view to render while data is being fetched. It returns an object with the following properties:
+```javascript
+import { Suspense } from "react"
+
+const App = () => (
+  <ErrorBoundary fallback={<p>Error!!!</p>}>
+    <Suspense fallback={<Spinner />}>
+      <MyComponent />
+    </Suspense>
+  </ErrorBoundary>
+)
+```
+
+`useSuspenseQuery` takes as input a query object and, optionally, an object which allows you to specify/override some query options: `arguments`, `context`, `expiryMs`, and `fetchPolicy`. The hook returns an object with the following properties:
 
 | Property       | Type     | Description                                                                                                                                   |
 | -------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -140,8 +180,4 @@ This hook allows view to render while data is being fetched. It returns an objec
 | refetching     | boolean  | Is data being fetched with `refetch()`                                                                                                        |
 | refetchError   | Error    | Error that occurs when processing `refetch()`                                                                                                 |
 
-Notes:
-
-- This hook requires `Suspense` to work.
-- Suspense for data fetching is still an an [experimental feature](https://reactjs.org/docs/concurrent-mode-suspense.html) and not recommended for production.
-- `options` has an extra property named `key`. When you use the same query _simultaneously_ from multiple places in view, make sure to set a unique `key` for each of them.
+**Important Note**: `useSuspenseQuery` options object has an extra property named `key`. When you use the same query _simultaneously_ from multiple places in view, make sure to set a unique `key` for each of them.

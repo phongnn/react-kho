@@ -30,14 +30,14 @@ This function should return a promise or use the `async` keyword. It accepts as 
 - `context`: a _plain_ JavaScript which can be used for passing metadata such as HTTP request headers.
 - `store`: reference to the Kho store which can be used for retrieving queries' data in cache. See [Store API](StoreAPI.md).
 
-```typescript
+```javascript
 import { Mutation } from "react-kho"
 import { updateArticle } from "../api"
 import { ArticleType } from "./normalizedTypes"
 
 const updateArticleMutation = new Mutation(
   "UpdateArticle",
-  (args: { slug: string; input: any }) => updateArticle(args.slug, args.input),
+  (args, ctx) => updateArticle(args.slug, args.input),
   {
     resultShape: ArticleType,
   }
@@ -66,7 +66,7 @@ When a mutation adds some new objects, Kho by itself doesn't know how to update 
 - Refetch related queries from backend: see [`afterQueryUpdates`](#afterqueryupdates); OR
 - Use `queryUpdates` option to specify how to update the related queries based on their exising data and the current mutation's result.
 
-`queryUpdates` is an object with keys being query names, and values being functions of the following signature:
+`queryUpdates` is an object with keys being **query names**, and values being functions of the following signature:
 
 ```typescript
 ;(
@@ -93,10 +93,12 @@ The return value of this function will replace the query's current value in cach
 
 **Example**:
 
-```typescript
+Updating a query named "GlobalFeed" after adding a new article:
+
+```javascript
 const addArticleMutation = new Mutation(
   "AddArticle",
-  (args: { input: any }) => addArticle(args.input),
+  (args) => addArticle(args.input),
   {
     resultShape: ArticleType,
     queryUpdates: {
@@ -118,12 +120,10 @@ const addArticleMutation = new Mutation(
 
 ### `beforeQueryUpdates`
 
-As its name suggests, `beforeQueryUpdates` is a function that will be called prior to the [`queryUpdates`](#queryupdates) option being processed.
-
-It is usually needed in the following situations:
+`beforeQueryUpdates` is a function that will be called prior to the `queryUpdates` option being processed. It is usually needed in the following situations:
 
 - The mutation deletes some data at backend and you want to delete the objects from the cache too.
-- You want to update a normalized object which can't be updated automatically (see an example below).
+- You want to update a normalized object which can't be updated automatically (see example below).
 
 **`beforeQueryUpdates` signature**:
 
@@ -163,11 +163,10 @@ The cache proxy object provides the following methods:
 
 When a comment is created, update the relevant article by adding the new comment to its list of comments:
 
-```typescript
+```javascript
 const createCommentMutation = new Mutation(
   "CreateComment",
-  (args: { slug: string; comment: string }) =>
-    createComment(args.slug, { body: args.comment }),
+  (args) => createComment(args.slug, { body: args.comment }),
   {
     resultShape: CommentType,
     beforeQueryUpdates: (
@@ -187,9 +186,7 @@ const createCommentMutation = new Mutation(
 
 ### `afterQueryUpdates`
 
-As its name suggests, `afterQueryUpdates` is a function that will be called when [`queryUpdates`](#queryupdates) has just finished.
-
-This function can be used, for example, to refetch related queries from backend or to reset the store after user signing in/out.
+`afterQueryUpdates` is a function that will be called when `queryUpdates` has just finished. This function can be used, for example, to refetch related queries from backend or to reset the store after user signing in/out.
 
 **`afterQueryUpdates` signature**:
 
@@ -214,10 +211,10 @@ Where:
 
 **Example**:
 
-```typescript
+```javascript
 const followUserMutation = new Mutation(
   "FollowUser",
-  (args: { username: string }) => followUser(args.username),
+  (args) => followUser(args.username),
   {
     afterQueryUpdates: (store) => store.refetchQueries([yourFeedQuery]),
   }
@@ -228,44 +225,20 @@ const followUserMutation = new Mutation(
 
 Below are the other options beside [`resultShape`](#resultshape), [`queryUpdates`](#queryupdates), [`beforeQueryUpdates`](#beforequeryupdates) and [`afterQueryUpdates`](#afterqueryupdates):
 
-| Option             | Description                                                                             | Default value |
-| ------------------ | --------------------------------------------------------------------------------------- | ------------- |
-| arguments          | Default arguments for the mutation function                                             | None          |
-| context            | Default context value for the mutation function                                         | None          |
-| optimisticResponse | Value used as an [optimistic response](Recipes.md#optimistic-response) for the mutation | None          |
-| syncMode           | If set to `true`, the mutation only completes when `afterQueryUpdates` has finished     | False         |
+| Option             | Description                                                                         | Default value |
+| ------------------ | ----------------------------------------------------------------------------------- | ------------- |
+| arguments          | Default arguments for the mutation function                                         | None          |
+| context            | Default context value for the mutation function                                     | None          |
+| optimisticResponse | [Optimistic response](Recipes.md#optimistic-response) for the mutation              | None          |
+| syncMode           | If set to `true`, the mutation only completes when `afterQueryUpdates` has finished | False         |
 
 ## useMutation hook
 
-```typescript
-function useMutation(
-  mutation: Mutation
-): [
-  (
-    options?: Pick<
-      MutatioOptions,
-      "arguments" | "context" | "optimisticResponse" | "syncMode"
-    >
-  ) => void,
-  MutationState
-]
-```
+This hook returns a function to call when you want to send the mutation request, and an object which represents the mutation's state.
 
-This hook returns a tuple that has two elements:
+```javascript
+import { useMutation } from "react-kho"
 
-- A function to call when you want to send mutation request.
-- An object which represents the mutation's state. It has the following properties:
-
-| Property | Type    | Description                                             |
-| -------- | ------- | ------------------------------------------------------- |
-| loading  | boolean | Is the mutation in progress?                            |
-| data     | any     | Return value from backend                               |
-| error    | Error   | Error that occurs during the processing of the mutation |
-| called   | boolean | Has the mutation completed yet?                         |
-
-**Example**:
-
-```typescript
 export function ArticleView() {
   const [followUser, { loading, called, error }] = useMutation(followUserMutation)
 
@@ -277,7 +250,18 @@ export function ArticleView() {
 
   return (
     <div>
-      <button onClick={() => followUser({ username })}>Follow</button>
+      <button onClick={() => followUser({ arguments: { username } })}>Follow</button>
     </div>
   )
 ```
+
+When calling the function to mutate data, you can provide an object to specify/override some options: `arguments`, `context`, `optimisticResponse`, and `syncMode`.
+
+The object representing mutation state has the following properties:
+
+| Property | Type    | Description                                             |
+| -------- | ------- | ------------------------------------------------------- |
+| loading  | boolean | Is the mutation in progress?                            |
+| data     | any     | Return value from backend                               |
+| error    | Error   | Error that occurs during the processing of the mutation |
+| called   | boolean | Has the mutation completed yet?                         |

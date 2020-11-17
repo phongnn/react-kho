@@ -2,7 +2,7 @@
 
 A local mutation is similar to a mutation but only updates client-side cache. It doesn't have a function to update data at backend.
 
-### Local mutation objects
+## Local mutation objects
 
 The `LocalMutation` constructor takes two arguments: a unique name and an object for mutation options:
 
@@ -19,11 +19,11 @@ const articlePostedMutation = new Mutation("NewArticlePosted", {
 ```
 
 ```javascript
-// from a web socket endpoint
+// for example, from a web socket endpoint
 store.mutateLocal(articlePostedMutation, { input: newArticle })
 ```
 
-### Using a local mutation to update cache
+## Using a local mutation to update cache
 
 There are four options for updating cache with a local mutation:
 
@@ -34,20 +34,35 @@ There are four options for updating cache with a local mutation:
 
 Check out [the documentation on mutations](Mutations.md#updating-client-side-cache) for how to use `queryUpdates`, `beforeQueryUpdates` and `afterQueryUpdates`.
 
-### Using a local mutation from views with `useLocalMutation` hook
+## Using a local mutation from views with `useLocalMutation` hook
 
-```typescript
-function useLocalMutation(
-  mutation: LocalMutation<Input>
-): [(options?: { input?: Input; syncMode?: boolean }) => void, MutationState]
+This hook returns a function to call when you want to mutate data, and an object which represents the mutation's state.
+
+```javascript
+import { useLocalMutation } from "react-kho"
+
+export function MyComponent() {
+  const [mutate, { loading, called, error }] = useLocalMutation(aLocalMutation)
+
+  useEffect(() => {
+    if (called && !error) {
+      // show a toast
+    }
+  }, [called, error])
+
+  return (
+    <div>
+      <button onClick={() => mutate({ input })}>Update data</button>
+    </div>
+  )
 ```
 
-This hook returns a tuple that has two elements:
+When calling the function to mutate data, you can provide an object to specify/override two values:
 
-- A function to call when you want to start processing the local mutation. The function takes an object with two properties:
-  - `input`: data in _non-normalized_ format
-  - `syncMode`: if set to `true`, the mutation only completes when `afterQueryUpdates` has finished (default value is `false`).
-- An object which represents the mutation's state. It has the following properties:
+- `input`: data in _non-normalized_ format
+- `syncMode`: if set to `true`, the mutation only completes when `afterQueryUpdates` has finished (default value is `false`).
+
+The object representing mutation state has the following properties:
 
 | Property | Type    | Description                                             |
 | -------- | ------- | ------------------------------------------------------- |

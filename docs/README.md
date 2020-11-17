@@ -1,6 +1,6 @@
-## Documentation
+# React-Kho Documentation
 
-### Concepts & Guides
+## Concepts & Guides
 
 - [Creating Kho store](CreateStore.md)
 - [Data normalization](DataNormalization.md)
@@ -9,10 +9,6 @@
 - [Local queries](LocalQueries.md)
 - [Local mutations](LocalMutations.md)
 - [Store API](StoreAPI.md)
-- [Gotchas](Gotchas.md)
+- [Some cautions](Cautions.md)
 
-<br/>
-
-### Examples
-
-<br/>
+## Examples
