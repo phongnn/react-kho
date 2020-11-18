@@ -52,8 +52,8 @@ const signInMutation = new Mutation("SignIn", signIn, {
 
 ## Local query options
 
-| Option       | Description                                                                                                             | Default value |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------- |
-| initialValue | The initial value in _non-normalized_ format                                                                            | None          |
-| shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md)                             | None          |
-| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#update-other-queries-based-on-a-query-s-data) | None          |
+| Option       | Description                                                                                                              | Default value |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| initialValue | The initial value in _non-normalized_ format                                                                             | None          |
+| shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md)                              | None          |
+| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#updating-other-queries-based-on-a-querys-data) | None          |

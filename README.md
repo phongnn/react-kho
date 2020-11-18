@@ -21,11 +21,11 @@ What makes _react-kho_ different from other data fetching libraries is that it *
 - Request deduplication
 - Interval polling
 - Paginated queries
-- Infinite scroll queries
+- Infinite queries
 - Local state
-- Mutations with query revalidation
+- Mutations with query refetch
 - Local mutations (e.g. for use with WebSocket or SSE)
-- Cache reset and query revalidation (e.g. upon user sign in/out)
+- Cache reset and query refetch (e.g. upon user sign in/out)
 - Mutation's optimistic response
 - TypeScript support
 - SSR support

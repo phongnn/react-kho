@@ -53,8 +53,8 @@ If you use TypeScript, make sure to declare the return type for the underlying d
 | expiryMs     | Specifies when this query's data expires and needs to be refetched (only if it's still active; inactive query will be removed from cache)                                          | Store's `queryExpiryMs` |
 | shape        | Specifies how to normalize the query's data. See [Data Normalization](DataNormalization.md).                                                                                       | None                    |
 | fetchPolicy  | `cache-first`, `cache-and-network`, `network-only`                                                                                                                                 | `cache-first`           |
-| merge        | For [infinite scroll queries](Recipes.md#infinite-scroll-queries)                                                                                                                  | None                    |
-| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#update-other-queries-based-on-a-query-s-data)                                                            | None                    |
+| merge        | For [infinite queries](Recipes.md#infinite-queries)                                                                                                                                | None                    |
+| queryUpdates | Updates other queries based on this query's data. See [recipe](Recipes.md#updating-other-queries-based-on-a-querys-data)                                                           | None                    |
 | selector     | Only needed when the first request to backend may return blank result AND you want to update this query's data from a related mutation/query. See [caution](Cautions.md#selector). | None                    |
 
 ## Hooks: when to use which?
@@ -92,19 +92,19 @@ function MyComponent() {
 
 `useQuery` takes as input a query object and, optionally, an object which allows you to specify/override some query options: `arguments`, `context`, `expiryMs`, and `fetchPolicy`. The hook returns an object with the following properties:
 
-| Property       | Type     | Description                                                                                                                                   |
-| -------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| loading        | boolean  | Is data being fetched?                                                                                                                        |
-| data           | any      | Data fetched from backend                                                                                                                     |
-| error          | Error    | Error that occurs when trying to fetch data                                                                                                   |
-| called         | boolean  | Has the query been called yet?                                                                                                                |
-| fetchMore      | function | For [infinite scroll queries](Recipes.md#infinite-scroll-queries): <br/> `(options?: { arguments?: TArguments; context?: TContext }) => void` |
-| fetchingMore   | boolean  | Is data being fetched with `fetchMore()`?                                                                                                     |
-| fetchMoreError | Error    | Error that occurs when processing `fetchMore()`                                                                                               |
-| refetch        | function | Request latest data from backend <br/> `() => void`                                                                                           |
-| refetching     | boolean  | Is data being fetched with `refetch()`                                                                                                        |
-| refetchError   | Error    | Error that occurs when processing `refetch()`                                                                                                 |
-| retry          | function | Retry a _failed_ request <br/> `() => void`                                                                                                   |
+| Property       | Type     | Description                                                                                                                     |
+| -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| loading        | boolean  | Is data being fetched?                                                                                                          |
+| data           | any      | Data fetched from backend                                                                                                       |
+| error          | Error    | Error that occurs when trying to fetch data                                                                                     |
+| called         | boolean  | Has the query been called yet?                                                                                                  |
+| fetchMore      | function | For [infinite queries](Recipes.md#infinite-queries): <br/> `(options?: { arguments?: TArguments; context?: TContext }) => void` |
+| fetchingMore   | boolean  | Is data being fetched with `fetchMore()`?                                                                                       |
+| fetchMoreError | Error    | Error that occurs when processing `fetchMore()`                                                                                 |
+| refetch        | function | Request latest data from backend <br/> `() => void`                                                                             |
+| refetching     | boolean  | Is data being fetched with `refetch()`                                                                                          |
+| refetchError   | Error    | Error that occurs when processing `refetch()`                                                                                   |
+| retry          | function | Retry a _failed_ request <br/> `() => void`                                                                                     |
 
 ## useLazyQuery
 
@@ -170,14 +170,14 @@ const App = () => (
 
 `useSuspenseQuery` takes as input a query object and, optionally, an object which allows you to specify/override some query options: `arguments`, `context`, `expiryMs`, and `fetchPolicy`. The hook returns an object with the following properties:
 
-| Property       | Type     | Description                                                                                                                                   |
-| -------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| data           | any      | Data fetched from backend                                                                                                                     |
-| fetchMore      | function | For [infinite scroll queries](Recipes.md#infinite-scroll-queries): <br/> `(options?: { arguments?: TArguments; context?: TContext }) => void` |
-| fetchingMore   | boolean  | Is data being fetched with `fetchMore()`?                                                                                                     |
-| fetchMoreError | Error    | Error that occurs when processing `fetchMore()`                                                                                               |
-| refetch        | function | Request latest data from backend <br/> `() => void`                                                                                           |
-| refetching     | boolean  | Is data being fetched with `refetch()`                                                                                                        |
-| refetchError   | Error    | Error that occurs when processing `refetch()`                                                                                                 |
+| Property       | Type     | Description                                                                                                                     |
+| -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| data           | any      | Data fetched from backend                                                                                                       |
+| fetchMore      | function | For [infinite queries](Recipes.md#infinite-queries): <br/> `(options?: { arguments?: TArguments; context?: TContext }) => void` |
+| fetchingMore   | boolean  | Is data being fetched with `fetchMore()`?                                                                                       |
+| fetchMoreError | Error    | Error that occurs when processing `fetchMore()`                                                                                 |
+| refetch        | function | Request latest data from backend <br/> `() => void`                                                                             |
+| refetching     | boolean  | Is data being fetched with `refetch()`                                                                                          |
+| refetchError   | Error    | Error that occurs when processing `refetch()`                                                                                   |
 
 **Important Note**: `useSuspenseQuery` options object has an extra property named `key`. When you use the same query _simultaneously_ from multiple places in view, make sure to set a unique `key` for each of them.

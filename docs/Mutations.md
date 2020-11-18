@@ -87,7 +87,7 @@ Where:
   - `mutationResult`: the current mutation's result in _normalized_ format.
   - `mutationArgs`: an object containing the current mutation's arguments.
   - `queryArgs`: an object containing the query's arguments.
-  - `optimistic`: indicates if `mutationResult` is an [optimistic response](Recipes.md#optimistic-response).
+  - `optimistic`: indicates if `mutationResult` is an [optimistic response](Recipes.md#mutations-with-optimistic-response).
 
 The return value of this function will replace the query's current value in cache. Note that the function will not be called for queries not already in cache.
 
@@ -144,7 +144,7 @@ Where:
 - `info`: an object with the following properties:
   - `mutationResult`: the current mutation's result in _normalized_ format.
   - `mutationArgs`: an object containing the current mutation's arguments.
-  - `optimistic`: indicates if `mutationResult` is an [optimistic response](Recipes.md#optimistic-response).
+  - `optimistic`: indicates if `mutationResult` is an [optimistic response](Recipes.md#mutations-with-optimistic-response).
 
 **Cache proxy's API**
 
@@ -207,7 +207,7 @@ Where:
 - `info`: an object with the following properties:
   - `mutationResult`: the current mutation's result as returned by the mutation function, _not_ in normalized format.
   - `mutationArgs`: an object containing the current mutation's arguments.
-  - `optimistic`: indicates if `mutationResult` is an [optimistic response](Recipes.md#optimistic-response).
+  - `optimistic`: indicates if `mutationResult` is an [optimistic response](Recipes.md#mutations-with-optimistic-response).
 
 **Example**:
 
@@ -225,12 +225,12 @@ const followUserMutation = new Mutation(
 
 Below are the other options beside [`resultShape`](#resultshape), [`queryUpdates`](#queryupdates), [`beforeQueryUpdates`](#beforequeryupdates) and [`afterQueryUpdates`](#afterqueryupdates):
 
-| Option             | Description                                                                         | Default value |
-| ------------------ | ----------------------------------------------------------------------------------- | ------------- |
-| arguments          | Default arguments for the mutation function                                         | None          |
-| context            | Default context value for the mutation function                                     | None          |
-| optimisticResponse | [Optimistic response](Recipes.md#optimistic-response) for the mutation              | None          |
-| syncMode           | If set to `true`, the mutation only completes when `afterQueryUpdates` has finished | False         |
+| Option             | Description                                                                           | Default value |
+| ------------------ | ------------------------------------------------------------------------------------- | ------------- |
+| arguments          | Default arguments for the mutation function                                           | None          |
+| context            | Default context value for the mutation function                                       | None          |
+| optimisticResponse | [Optimistic response](Recipes.md#mutations-with-optimistic-response) for the mutation | None          |
+| syncMode           | If set to `true`, the mutation only completes when `afterQueryUpdates` has finished   | False         |
 
 ## useMutation hook
 
