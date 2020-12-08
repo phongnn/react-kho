@@ -2,6 +2,10 @@
 
 A local mutation is similar to a mutation but only updates client-side cache. It doesn't have a function to update data at backend.
 
+- [Local mutation objects](#local-mutation-objects)
+- [Using a local mutation to update cache](#using-a-local-mutation-to-update-cache)
+- [Using a local mutation from views with `useLocalMutation` hook](#using-a-local-mutation-from-views-with-uselocalmutation-hook)
+
 ## Local mutation objects
 
 The `LocalMutation` constructor takes two arguments: a unique name and an object for mutation options:

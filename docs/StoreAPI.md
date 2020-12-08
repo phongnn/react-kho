@@ -1,6 +1,18 @@
 # Store API
 
-## `query`
+- [query()](#query)
+- [mutate()](#mutate)
+- [mutateLocal()](#mutatelocal)
+- [getQueryData()](#getquerydata)
+- [setQueryData()](#setquerydata)
+- [refetchQueries()](#refetchqueries)
+- [refetchActiveQueries()](#refetchactivequeries)
+- [clearStore()](#clearstore)
+- [getState()](#getstate)
+
+<br/>
+
+## `query()`
 
 Fetches data, saves into cache, and returns query's result. It won't call backend if data is already available in cache.
 
@@ -14,7 +26,7 @@ const data = await store.query(globalFeedQuery, {
 
 <br/>
 
-## `mutate`
+## `mutate()`
 
 Calls backend to mutate data, updates cache, and returns mutation's result.
 
@@ -28,7 +40,7 @@ const article = await store.mutate(createArticleMutation, {
 
 <br/>
 
-## `mutateLocal`
+## `mutateLocal()`
 
 Updates cache using a local mutation.
 
@@ -42,7 +54,7 @@ await store.mutateLocal(aLocalMutation, {
 
 <br/>
 
-## `getQueryData`
+## `getQueryData()`
 
 Retrieves query/local query's data from cache. This method is synchronous and doesn't call backend if data is not available.
 
@@ -60,7 +72,7 @@ const page3 = store.getQueryData(
 
 <br/>
 
-## `setQueryData`
+## `setQueryData()`
 
 Stores a query/local query into cache. Data will be normalized if you've defined a shape for that query.
 
@@ -70,7 +82,7 @@ store.setQueryData(aQuery, someData)
 
 <br/>
 
-## `refetchQueries`
+## `refetchQueries()`
 
 Refetches queries from backend and saves into cache.
 
@@ -89,7 +101,7 @@ await store.refetchQueries([
 
 <br/>
 
-## `refetchActiveQueries`
+## `refetchActiveQueries()`
 
 Refetches actives queries from backend and saves into cache. This could be useful for scenarios such as window re-focus or network re-connected.
 
@@ -99,7 +111,7 @@ await store.refetchActiveQueries()
 
 <br/>
 
-## `clearStore`
+## `clearStore()`
 
 Clears cache, resets local queries to their initial values, then refetches remote _active_ queries.
 
@@ -109,7 +121,7 @@ await store.resetStore()
 
 <br/>
 
-## `getState`
+## `getState()`
 
 Usually used for server-side rendering (SSR), this method returns an object tree that represents the current state of the store.
 

@@ -2,6 +2,11 @@
 
 Simply put, a local query is a query without a data fetching function. You can use it to handle client state, for example, information of the currently signed in user.
 
+- [Local query objects](#local-query-objects)
+- [Using a local query's data from views](#using-a-local-querys-data-from-views)
+- [Updating a local query's data](#updating-a-local-querys-data)
+- [Local query options](#local-query-options)
+
 ## Local query objects
 
 The `LocalQuery` constructor takes two arguments: a _unique_ name and an object for query options:

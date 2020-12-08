@@ -37,7 +37,11 @@ What makes _react-kho_ different from other data fetching libraries is that it *
 
 ## Usage
 
-Inside your React project directory, run `npm install react-kho` or `yarn add react-kho`.
+Inside your React project directory, run the following command:
+
+```
+npm install react-kho tslib
+```
 
 <br/>
 
